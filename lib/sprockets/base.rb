@@ -304,10 +304,18 @@ module Sprockets
         path = root.join(filename)
         paths << path
 
-        if stat(path).directory?
-          each_entry(path) do |subpath|
-            paths << subpath
+        begin
+          if stat(path).directory?
+            each_entry(path) do |subpath|
+              paths << subpath
+            end
           end
+        rescue => e
+          puts "============"
+          puts path
+          puts stat(path).inspect
+          puts "============"
+          raise e
         end
       end
 
